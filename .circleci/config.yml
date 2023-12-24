@@ -12,39 +12,14 @@ jobs:
           name: Terraform Init
           command: terraform init
       - run:
-          name: Terraform Apply
-          command: terraform apply -auto-approve
-
-  destroy:
-    docker:
-      - image: hashicorp/terraform:latest
-    working_directory: /terraform_project
-
-    steps:
-      - checkout
+          name: Terraform Plan
+          command: terraform plan -out=tfplan
       - run:
-          name: Prompt for Destroy
-          command: |
-            read -p "Do you want to destroy the infrastructure? (yes/no): " response
-            if [ "$response" = "yes" ]; then
-              terraform destroy -auto-approve
-            else
-              echo "Destroy canceled by user."
-            fi
+          name: Terraform Apply
+          command: terraform apply -auto-approve tfplan
 
 workflows:
   version: 2
-  build_and_destroy:
+  build:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - build-branch
-      - destroy:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - destroy-branch
+      - build
