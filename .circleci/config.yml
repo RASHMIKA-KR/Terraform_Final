@@ -4,7 +4,7 @@ jobs:
   build-and-destroy:
     docker:
       - image: hashicorp/terraform:latest
-    working_directory: /Terraform_Final
+    working_directory: /Terraform
     steps:
       - checkout
       - run:
@@ -17,7 +17,7 @@ jobs:
   hold-for-destroy:
     docker:
       - image: hashicorp/terraform:latest
-    working_directory: /Terraform_Final
+    working_directory: /Terraform
     steps:
       - checkout
       - run:
@@ -27,7 +27,7 @@ jobs:
   destroy:
     docker:
       - image: hashicorp/terraform:latest
-    working_directory: /Terraform_Final
+    working_directory: /Terraform
     steps:
       - checkout
       - run:
@@ -46,7 +46,7 @@ workflows:
           filters:
             branches:
               only:
-                - build-branch
+                - main
 
       - hold-for-destroy:
           type: approval
@@ -59,4 +59,4 @@ workflows:
           filters:
             branches:
               only:
-                - build-branch
+                - main
